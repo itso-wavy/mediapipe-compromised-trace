@@ -1,0 +1,247 @@
+:root {
+  --bg: #030503;
+  --green: #50ff7a;
+  --red: #ff315a;
+  --cyan: #35e7ff;
+  --dim: rgba(126, 255, 153, 0.58);
+  --panel: rgba(2, 16, 7, 0.74);
+  --line: rgba(80, 255, 122, 0.28);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--green);
+  font-family: "IBM Plex Mono", "Cascadia Code", Consolas, monospace;
+}
+
+button {
+  font: inherit;
+}
+
+.terminal-shell {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 42%, rgba(53, 231, 255, 0.08), transparent 34%),
+    radial-gradient(circle at 18% 74%, rgba(255, 49, 90, 0.08), transparent 24%),
+    linear-gradient(180deg, #071007, #020302 72%);
+}
+
+.trace-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.boot-panel {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 4;
+  width: min(620px, calc(100vw - 32px));
+  padding: 24px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  box-shadow:
+    0 0 0 1px rgba(80, 255, 122, 0.08) inset,
+    0 0 42px rgba(80, 255, 122, 0.16),
+    12px 12px 0 rgba(255, 49, 90, 0.08);
+  transform: translate(-50%, -50%);
+  transition: opacity 220ms linear, transform 220ms linear;
+}
+
+.boot-panel.is-hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, calc(-50% + 8px));
+}
+
+.kicker {
+  margin: 0 0 12px;
+  color: var(--red);
+  font-size: 13px;
+  letter-spacing: 0;
+}
+
+h1 {
+  margin: 0 0 14px;
+  color: var(--green);
+  font-size: clamp(38px, 8vw, 86px);
+  line-height: 0.88;
+  letter-spacing: 0;
+  text-shadow:
+    2px 0 var(--red),
+    -2px 0 var(--cyan),
+    0 0 28px rgba(80, 255, 122, 0.24);
+}
+
+.copy {
+  max-width: 500px;
+  margin: 0 0 22px;
+  color: var(--dim);
+  line-height: 1.55;
+}
+
+.device-error {
+  min-height: 18px;
+  margin: 0 0 16px;
+  color: var(--red);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+#startButton {
+  height: 44px;
+  padding: 0 16px;
+  border: 1px solid var(--green);
+  border-radius: 0;
+  background: rgba(80, 255, 122, 0.08);
+  color: var(--green);
+  cursor: pointer;
+  box-shadow: 0 0 18px rgba(80, 255, 122, 0.12);
+}
+
+#startButton:hover {
+  background: rgba(80, 255, 122, 0.16);
+}
+
+#startButton:disabled {
+  cursor: wait;
+  opacity: 0.68;
+}
+
+.hud {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  z-index: 3;
+  width: min(340px, calc(100vw - 36px));
+  padding: 12px;
+  border: 1px solid var(--line);
+  background: rgba(1, 8, 3, 0.58);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 0 28px rgba(80, 255, 122, 0.08);
+}
+
+.hud::before {
+  content: "TRACE://MEDIA_PIPE_INTRUSION";
+  display: block;
+  margin-bottom: 10px;
+  color: var(--red);
+  font-size: 12px;
+}
+
+.hud-row {
+  display: grid;
+  grid-template-columns: 78px 1fr;
+  align-items: center;
+  min-height: 24px;
+  gap: 10px;
+  font-size: 13px;
+}
+
+.hud-row span {
+  color: rgba(80, 255, 122, 0.54);
+}
+
+.hud-row strong {
+  color: var(--green);
+  font-weight: 500;
+}
+
+.hud-row strong.warning {
+  color: var(--red);
+}
+
+.meter {
+  height: 7px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: rgba(80, 255, 122, 0.06);
+}
+
+.meter i {
+  display: block;
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--green), var(--red));
+  box-shadow: 0 0 16px rgba(80, 255, 122, 0.4);
+}
+
+.camera-feed {
+  position: absolute;
+  right: 18px;
+  top: 18px;
+  z-index: 3;
+  width: 176px;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border: 1px solid rgba(80, 255, 122, 0.24);
+  opacity: 0;
+  transform: scaleX(-1);
+  filter: grayscale(1) contrast(1.5) brightness(0.7) hue-rotate(78deg);
+  transition: opacity 200ms linear;
+}
+
+.camera-feed.is-active {
+  opacity: 0.24;
+}
+
+.scanline {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0.28;
+  background: repeating-linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.05) 0,
+    rgba(255, 255, 255, 0.05) 1px,
+    transparent 1px,
+    transparent 5px
+  );
+  mix-blend-mode: screen;
+}
+
+.noise {
+  position: absolute;
+  inset: -20%;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0.08;
+  background-image:
+    linear-gradient(90deg, transparent, rgba(80, 255, 122, 0.16), transparent),
+    radial-gradient(circle at 20% 30%, rgba(255,255,255,.8) 0 1px, transparent 1px),
+    radial-gradient(circle at 70% 65%, rgba(255,255,255,.7) 0 1px, transparent 1px);
+  background-size: 220px 100%, 17px 19px, 29px 31px;
+  animation: driftNoise 1.4s steps(2, end) infinite;
+}
+
+@keyframes driftNoise {
+  0% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(-2%, 1%, 0); }
+  100% { transform: translate3d(1%, -1%, 0); }
+}
+
+@media (max-width: 760px) {
+  .camera-feed {
+    width: 112px;
+    top: auto;
+    bottom: 18px;
+  }
+}

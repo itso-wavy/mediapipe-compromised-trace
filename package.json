@@ -1,0 +1,7 @@
+{
+  "scripts": {
+    "test": "node --test test/media-trace-core.test.js",
+    "check": "node --check src/media-trace-core.js && node --check src/app.js"
+  },
+  "devDependencies": {}
+}

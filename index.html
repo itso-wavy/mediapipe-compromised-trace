@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>COMPROMISED TRACE</title>
+  <link rel="stylesheet" href="src/styles.css">
+</head>
+<body>
+  <main class="terminal-shell">
+    <canvas id="traceCanvas" class="trace-canvas" aria-label="Media-reactive abstract hand trace"></canvas>
+    <video id="camera" class="camera-feed" playsinline muted></video>
+
+    <section class="boot-panel" id="bootPanel">
+      <p class="kicker">UNAUTHORIZED MEDIA SESSION</p>
+      <h1>COMPROMISED TRACE</h1>
+      <p class="copy">Camera maps both hands. Microphone corrupts the signal. Move both hands to draw coordinates into the system.</p>
+      <p class="device-error" id="deviceError"></p>
+      <button id="startButton" type="button">ARM CAMERA + MIC</button>
+    </section>
+
+    <aside class="hud">
+      <div class="hud-row">
+        <span>MEDIA</span>
+        <strong id="mediaStatus">OFFLINE</strong>
+      </div>
+      <div class="hud-row">
+        <span>LEFT</span>
+        <strong id="leftStatus">NO SIGNAL</strong>
+      </div>
+      <div class="hud-row">
+        <span>RIGHT</span>
+        <strong id="rightStatus">NO SIGNAL</strong>
+      </div>
+      <div class="hud-row">
+        <span>MIC</span>
+        <div class="meter"><i id="audioMeter"></i></div>
+      </div>
+    </aside>
+
+    <div class="scanline" aria-hidden="true"></div>
+    <div class="noise" aria-hidden="true"></div>
+  </main>
+
+  <script src="src/media-trace-core.js"></script>
+  <script type="module" src="src/app.js"></script>
+</body>
+</html>
