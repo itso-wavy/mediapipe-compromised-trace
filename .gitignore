@@ -1,0 +1,7 @@
+node_modules/
+.omx/
+.superpowers/
+.server-job-id
+.server.pid
+*.log
+.DS_Store
